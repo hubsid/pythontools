@@ -4,11 +4,11 @@ import os
 def getscripts():
     scripts = []
     code_path = 'pythontools'
-    for path in ['common', 'rdm']:
+    for path in ['common', 'rdm', 'iam']:
         path = os.path.join(code_path, path)
         if os.path.isdir(path):
             binpath = os.path.join(path, 'bin')
-            scripts += [os.path.join(binpath, p) for p in os.listdir(binpath)]
+            scripts += [os.path.join(binpath, p) for p in os.listdir(binpath) if os.path.isfile(p)]
     return scripts
 
 setup(
