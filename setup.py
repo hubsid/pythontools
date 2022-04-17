@@ -8,8 +8,14 @@ def getscripts():
         path = os.path.join(code_path, path)
         if os.path.isdir(path):
             binpath = os.path.join(path, 'bin')
-            scripts += [os.path.join(binpath, p) for p in os.listdir(binpath) if os.path.isfile(p)]
+            for p in os.listdir(binpath):
+                p = os.path.join(binpath, p)
+                if not os.path.isdir(p):
+                    scripts.append(p)
     return scripts
+
+print(getscripts())
+exit()
 
 setup(
     name='tools-python',
