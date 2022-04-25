@@ -14,11 +14,11 @@ def getscripts():
                     scripts.append(p)
     return scripts
 
-print(getscripts())
-exit()
+# print(f'SUPER:{getscripts()}')
+# exit()
 
 setup(
-    name='tools-python',
+    name='pythontools',
     version='0.0.1',
     author='Sidharth R',
     author_email='sidharth.r@nutanix.com',
