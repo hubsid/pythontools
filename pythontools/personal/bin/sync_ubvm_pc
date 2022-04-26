@@ -1,0 +1,60 @@
+#!/usr/local/bin/python3
+def main():
+    file = open('/Users/sidharth/.bash_profile', 'r')
+
+    content_ubvm = ''
+    content_pc = ''
+
+    write_to_ubvm = False
+    write_to_pc = False
+
+    section_start = False
+    for line in file:
+        if line.startswith('##>'):
+            section_start = True
+            if line.find('UBVM') > 0:
+                write_to_ubvm = True
+            if line.find('PC') > 0:
+                write_to_pc = True
+        elif line.startswith('##<'):
+            section_start = False
+            write_to_ubvm = False
+            write_to_pc = False
+
+        if section_start:
+            if write_to_ubvm:
+                content_ubvm += line
+            if write_to_pc:
+                content_pc += line
+
+    import os
+    dir = '/tmp/copybashprofile'
+    os.system(f'rm -rf {dir}')
+    os.mkdir(dir)
+
+    file_ubvm = os.path.join(dir, 'ubvm')
+    file_pc = os.path.join(dir, 'pc')
+
+    open(file_ubvm, 'w').write(content_ubvm)
+    open(file_pc, 'w').write(content_pc)
+
+    sendscript = os.path.join(dir, 'sendscript')
+    open(sendscript, 'w').write(f'#!/bin/sh\n'
+                                f'source ~/.bash_profile &&'
+                                f' sendubvm {file_ubvm} "~/.bash_profile" && echo sent to ubvm;'
+                                f' sendpc {file_pc} "~/.bash_profile" && echo sent to pc')
+    import subprocess
+    os.system(f'chmod +x {sendscript}')
+    # subprocess.run(['sh', '-c', f'{sendscript}'])
+    my_env = os.environ.copy()
+    my_env["PATH"] = "/usr/local/bin:/Users/sidharth/bin:" + my_env["PATH"]
+    subprocess.run(['bash', '-c',
+                    f'source ~/.bash_profile;'
+                    f'sendubvm {file_ubvm} "~/.bash_profile" && echo sent bashprofile to ubvm;'
+                    f'sendubvm /Users/sidharth/.git-access "~/" && echo sent gitaccess file to ubvm;'
+                    f'sendpc {file_pc} "~/.bash_profile" && echo sent bashprofile to pc;'], env=my_env)
+
+    print('successfully copied')
+
+if __name__ == '__main__':
+    main()
