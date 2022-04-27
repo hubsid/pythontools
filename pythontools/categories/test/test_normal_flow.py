@@ -5,12 +5,7 @@ import os
 Performs all tests using admin user.
 This is not an rbac test.
 '''
-try:
-    api = v4api.V4CategoriesApi(pc_ip=os.environ['PC'])
-except KeyError:
-    print('please provide the PC IP in the environment variable \'PC\'')
-    exit(1)
-
+api = v4api.V4CategoriesApi(pc_ip=util.get_pc_ip_from_env())
 
 def test_create_category_success():
     response = api.create({
