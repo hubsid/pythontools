@@ -102,4 +102,3 @@ def test_delete_non_existent_category_failure():
 
     assert response.status_code == 404
     assert response.json()['data']['error'][0]['code'] == 'CTGRS-50006'
-
