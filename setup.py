@@ -4,7 +4,7 @@ import os
 def getscripts():
     scripts = []
     code_path = 'pythontools'
-    for path in ['common', 'rdm', 'iam', 'personal']:
+    for path in ['common', 'rdm', 'iam', 'personal', 'categories']:
         path = os.path.join(code_path, path)
         if os.path.isdir(path):
             binpath = os.path.join(path, 'bin')
