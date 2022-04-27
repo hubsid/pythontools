@@ -1,0 +1,1 @@
+ pytest --pyargs pythontools.categories.test.test_normal_flow
