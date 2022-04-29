@@ -51,7 +51,7 @@ def main():
     subprocess.run(['bash', '-c',
                     f'source ~/.bash_profile;'
                     f'sendubvm {file_ubvm} "~/.bash_profile" && echo sent bashprofile to ubvm;'
-                    f'sendubvm /Users/sidharth/.git-access "~/" && echo sent gitaccess file to ubvm;'
+                    f'sendubvm /Users/sidharth/.git-credentials "~/" && echo sent gitaccess file to ubvm;'
                     f'sendpc {file_pc} "~/.bash_profile" && echo sent bashprofile to pc;'], env=my_env)
 
     print('successfully copied')

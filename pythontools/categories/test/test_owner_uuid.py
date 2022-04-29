@@ -26,6 +26,26 @@ def test_owner_uuid_in_list_api():
 
     assert response_body.get('ownerUuid', None)
 
+def test_update_without_owner_field_success():
+    extId = api.create({'name': util.create_category_name()}).json()['data'][
+        'extId']
+    get_api_res = api.getone(extId)
+
+    etag = get_api_res.headers['Etag']
+    req_body = get_api_res.json()['data']
+    desc = util.create_category_description()
+    req_body['description'] = desc
+
+    del req_body['ownerUuid']
+
+    response = api.update(extId, etag, req_body)
+
+    assert response.status_code == 200
+
+    response = api.getone(extId)
+    assert response.json()['data']['description'] == desc
+
+
 def test_admin_can_update_owner():
     extId = api.create({'name': util.create_category_name()}).json()['data']['extId']
 
