@@ -8,6 +8,8 @@ def create_category_name():
 
 def create_category_description():
     return 'cat_desc_' + str(random())
+def create_category_userspecifiedname():
+    return 'uname_' + str(random())
 
 def get_pc_ip_from_env():
     try:
