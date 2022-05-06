@@ -2,7 +2,6 @@ import json
 import os
 from pythontools.categories import v4api, util
 
-api = v4api.V4CategoriesApi(pc_ip=util.get_pc_ip_from_env())
 
 
 def print_response(response):
@@ -29,37 +28,38 @@ def print_response(response):
 # rj = response.json()
 # body = rj['data']
 # print(f'length:{len(body)}')
-failureLimit = 10
-failurecount = 0
-extIds = set()
-while True:
-    print('*'*100)
-    response = api.getall(query_params={
-        '$filter': 'contains(name, \'cat_\')',
-        '$limit': 100
-    })
+def delete_bulk(name_matches, failureLimit, failurecount):
+    api = v4api.V4CategoriesApi(pc_ip=util.get_pc_ip_from_env())
+    failureLimit = 10
+    failurecount = 0
+    while True:
+        print('*'*100)
+        response = api.getall(query_params={
+            '$filter': 'contains(name, \'cat_\')',
+            '$limit': 100
+        })
 
-    if response.status_code == 200:
-        body = response.json()
-        print(body)
-        categories = body['data']
-        print(f'{len(categories)} results obtained')
-        if len(categories) == 0:
-            print('no more results, exiting')
-            break
-        print(f'deleting {len(categories)}')
-        for category in categories:
-            api.delete(category['extId'])
+        if response.status_code == 200:
+            body = response.json()
+            print(body)
+            categories = body['data']
+            print(f'{len(categories)} results obtained')
+            if len(categories) == 0:
+                print('no more results, exiting')
+                break
+            print(f'deleting {len(categories)}')
+            for category in categories:
+                api.delete(category['extId'])
 
+        else:
+            if failurecount > failureLimit:
+                break
+            failurecount += 1
+            print(response.status_code)
+            print(response.text)
+
+    print('='*100)
+    if failurecount > failureLimit:
+        print('broke loop due to continuous failure')
     else:
-        if failurecount > failureLimit:
-            break
-        failurecount += 1
-        print(response.status_code)
-        print(response.text)
-
-print('='*100)
-if failurecount > failureLimit:
-    print('broke loop due to continuous failure')
-else:
-    print('success')
+        print('success')
