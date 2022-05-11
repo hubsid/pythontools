@@ -2,8 +2,7 @@
 import click
 import requests
 
-import actdir
-import findrole
+from pythontools.iam import actdir, findrole
 from pythontools import common
 
 
@@ -33,7 +32,7 @@ def create(host, role_name, actdirname='actdir', user_name='ca_user1', domain='q
 	role = role_map[role_name]
 	role_uuid = role['metadata']['uuid']
 
-	user_uuid = actdir.get_user_uuid(host, user_name, None, actdirname)
+	user_uuid = actdir.get_user_uuid(host, user_name, None, actdirname, domain)
 
 	if not user_uuid:
 		print(f'no such user by the name {user_name} found in the domain {domain}')

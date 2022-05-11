@@ -137,7 +137,7 @@ def search_actdir(host, actdir_uuid, username):
     return None
 
 
-def create_user(host, username, actdir_uuid):
+def create_user(host, username, actdir_uuid, domain='qa.nutanix.com'):
     res = requests.post(url=f'https://{host}:9440/api/nutanix/v3/users',
                         json={
                             "api_version": "3.1.0",
@@ -147,7 +147,7 @@ def create_user(host, username, actdir_uuid):
                             "spec": {
                                 "resources": {
                                     "directory_service_user": {
-                                        "user_principal_name": username,
+                                        "user_principal_name": username + '@' + domain,
                                         "directory_service_reference": {
                                             "kind": "directory_service",
                                             "uuid": actdir_uuid,
@@ -168,15 +168,15 @@ def create_user(host, username, actdir_uuid):
                 f'create user failed with statuscode 400 and error response:{res}')
 
 
-def get_user_uuid(host, username, actdir_uuid, actdirname):
+def get_user_uuid(host, username, actdir_uuid, actdirname, domain='qa.nutanix.com'):
     if not actdir_uuid:
         res = get_actdir_details(host, actdirname)
         actdir_uuid = res['metadata']['uuid']
     user = search_actdir(host, actdir_uuid, username)
 
     if not user:
-        create_user(host, username, actdir_uuid)
-    return search_user(host, username)
+        create_user(host, username, actdir_uuid, domain)
+    return search_user(host, username, domain)
 
 
 if __name__ == '__main__':

@@ -1,3 +1,5 @@
+import json
+
 from pythontools.categories import v4api, util
 
 api = v4api.V4CategoriesApi(pc_ip=util.get_pc_ip_from_env())
@@ -46,7 +48,7 @@ def test_update_without_owner_field_success():
     assert response.json()['data']['description'] == desc
 
 
-def test_admin_can_update_owner():
+def test_admin_updates_wrong_owner_uuid_fails():
     extId = api.create({'name': util.create_category_name()}).json()['data']['extId']
 
     response = api.getone(extId)
@@ -55,7 +57,5 @@ def test_admin_can_update_owner():
 
     response = api.update(extId, response.headers['Etag'], category)
 
-    assert response.status_code == 200
-
-    response = api.getone(extId)
-    assert response.json()['data']['ownerUuid'] == util.AAA_UUID
+    print(json.dumps(response.text, indent=4))
+    assert response.status_code == 400
