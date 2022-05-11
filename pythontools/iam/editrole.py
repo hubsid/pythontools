@@ -3,8 +3,7 @@ import time
 import click
 import requests
 
-import getpermission
-import getrole
+from pythontools.iam import getpermission, getrole
 from pythontools import common
 
 

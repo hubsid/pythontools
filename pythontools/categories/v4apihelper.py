@@ -19,6 +19,7 @@ class V4CategoriesApiHelper(V4CategoriesApi):
             if cat.get(item, None):
                 cat.pop(item)
         cat.update(include)
+        print(f'updating with body:{cat}')
 
         return self.update(ext_id, etag, cat)
 

@@ -3,6 +3,7 @@ from random import random
 
 from pythontools.categories import v4api
 
+ADMIN_UUID = '00000000-0000-0000-0000-000000000000'
 AAA_UUID = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
 
 def create_category_name():

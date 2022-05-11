@@ -1,8 +1,10 @@
 import json
+import os
 
-from pythontools.categories import v4api, util
+from pythontools.categories import v4apihelper, util
+from pythontools.iam import actdir
 
-api = v4api.V4CategoriesApi(pc_ip=util.get_pc_ip_from_env())
+api = v4apihelper.V4CategoriesApiHelper(pc_ip=util.get_pc_ip_from_env())
 
 def test_owner_uuid_is_created():
     response = api.create({'name': util.create_category_name()})
@@ -59,3 +61,32 @@ def test_admin_updates_wrong_owner_uuid_fails():
 
     print(json.dumps(response.text, indent=4))
     assert response.status_code == 400
+
+def test_admin_updates_to_ca_user1_from_admin_success():
+    ext_id = api.create_with_name().json()['data']['extId']
+
+    res = api.getone(ext_id)
+
+    assert res.status_code == 200
+    assert res.json()['data']['ownerUuid'] == util.ADMIN_UUID
+
+    rbacuser = os.environ.get('rbacuser')
+
+    res = api.update_with_etag(ext_id, remove=['ownerUuid'], include={'ownerUuid': rbacuser})
+    print(res.text)
+    assert res.status_code == 200
+
+    res = api.getone(ext_id)
+    assert res.json()['data']['ownerUuid'] == rbacuser
+
+def test_rbac_user_cant_update_owner_uuid():
+    username = os.environ.get('username')
+    password = os.environ.get('password')
+    api_rbac = v4apihelper.V4CategoriesApiHelper(pc_ip=util.get_pc_ip_from_env(),
+                                                 username=username, password=password)
+
+    ext_id = api_rbac.create_with_name().json()['data']['extId']
+
+    res = api_rbac.update_with_etag(ext_id, remove=['ownerUuid'], include={'ownerUuid': util.ADMIN_UUID})
+
+    assert res.status_code == 403

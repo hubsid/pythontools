@@ -3,7 +3,7 @@ import json
 import click
 import requests
 
-import findrole
+from pythontools.iam import findrole
 from pythontools import common
 
 
