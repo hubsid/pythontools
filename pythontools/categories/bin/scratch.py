@@ -29,7 +29,7 @@ def print_response(response):
 # body = rj['data']
 # print(f'length:{len(body)}')
 def delete_bulk(name_matches, failureLimit, failurecount):
-    api = v4api.V4CategoriesApi(pc_ip=util.get_pc_ip_from_env())
+    api = v4api.V4CategoriesApi()
     failureLimit = 10
     failurecount = 0
     while True:

@@ -1,16 +1,10 @@
-from pythontools import common
 import requests
+
 from pythontools.categories import const
+from pythontools.common.apibase import ApiBase
 
-class V4CategoriesApi:
-    def __init__(self, pc_ip, username=None, password=None):
-        self.pc_ip = pc_ip
-        if not username or not password:
-            self.auth = common.ADMIN_AUTH
-        else:
-            self.auth = requests.auth.HTTPBasicAuth(username, password)
-        self.request_args = {'auth': self.auth, 'verify': False}
 
+class V4CategoriesApi(ApiBase):
     def single_entity_url(self, ext_id):
         return const.V4_API_SINGLE_ENTITY_URL.format(pc=self.pc_ip, ext_id=ext_id)
 

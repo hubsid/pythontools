@@ -89,3 +89,10 @@ def clean_role_entity(role):
 
 def clean_permission_entity(permission):
 	return permission['metadata']['uuid']
+
+def get_pc_ip_from_env():
+	try:
+		return os.environ['PC']
+	except KeyError:
+		print('please provide the PC IP in the environment variable \'PC\'')
+		exit(1)

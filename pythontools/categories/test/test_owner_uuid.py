@@ -1,10 +1,10 @@
 import json
 import os
 
+from categories import const
 from pythontools.categories import v4apihelper, util
-from pythontools.iam import actdir
 
-api = v4apihelper.V4CategoriesApiHelper(pc_ip=util.get_pc_ip_from_env())
+api = v4apihelper.V4CategoriesApiHelper()
 
 def test_owner_uuid_is_created():
     response = api.create({'name': util.create_category_name()})
@@ -68,7 +68,7 @@ def test_admin_updates_to_ca_user1_from_admin_success():
     res = api.getone(ext_id)
 
     assert res.status_code == 200
-    assert res.json()['data']['ownerUuid'] == util.ADMIN_UUID
+    assert res.json()['data']['ownerUuid'] == const.ADMIN_UUID
 
     rbacuser = os.environ.get('rbacuser')
 
@@ -82,11 +82,10 @@ def test_admin_updates_to_ca_user1_from_admin_success():
 def test_rbac_user_cant_update_owner_uuid():
     username = os.environ.get('username')
     password = os.environ.get('password')
-    api_rbac = v4apihelper.V4CategoriesApiHelper(pc_ip=util.get_pc_ip_from_env(),
-                                                 username=username, password=password)
+    api_rbac = v4apihelper.V4CategoriesApiHelper(username=username, password=password)
 
     ext_id = api_rbac.create_with_name().json()['data']['extId']
 
-    res = api_rbac.update_with_etag(ext_id, remove=['ownerUuid'], include={'ownerUuid': util.ADMIN_UUID})
+    res = api_rbac.update_with_etag(ext_id, remove=['ownerUuid'], include={'ownerUuid': const.ADMIN_UUID})
 
     assert res.status_code == 403

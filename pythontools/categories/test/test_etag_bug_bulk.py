@@ -25,7 +25,7 @@ combinator_data = {
     Actions.usname2: [Actions.keep, Actions.update, Actions.remove]
 }
 
-api = v4api.V4CategoriesApi(pc_ip=util.get_pc_ip_from_env())
+api = v4api.V4CategoriesApi()
 
 def test(combinator_input):
     funame = 'userSpecifiedName'

@@ -1,6 +1,6 @@
 from pythontools.categories import v4api, util
 
-api = v4api.V4CategoriesApi(pc_ip=util.get_pc_ip_from_env())
+api = v4api.V4CategoriesApi()
 
 def test_remove_description_update_add_description_again_update_success():
     description = util.create_category_description()

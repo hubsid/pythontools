@@ -3,9 +3,6 @@ from random import random
 
 from pythontools.categories import v4api
 
-ADMIN_UUID = '00000000-0000-0000-0000-000000000000'
-AAA_UUID = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
-
 def create_category_name():
     return 'cat_' + str(random())
 
@@ -14,22 +11,14 @@ def create_category_description():
 def create_category_userspecifiedname():
     return 'uname_' + str(random())
 
-def get_pc_ip_from_env():
-    try:
-        return os.environ['PC']
-    except KeyError:
-        print('please provide the PC IP in the environment variable \'PC\'')
-        exit(1)
-
-
-def delete_bulk(name_matches, failureLimit, failurecount):
-    api = v4api.V4CategoriesApi(pc_ip=get_pc_ip_from_env())
+def delete_bulk(filter, failureLimit, failurecount):
+    api = v4api.V4CategoriesApi()
     failureLimit = 10
     failurecount = 0
     while True:
         print('*' * 100)
         response = api.getall(query_params={
-            '$filter': 'contains(name, \'cat_\')',
+            '$filter': filter,
             '$limit': 100
         })
 

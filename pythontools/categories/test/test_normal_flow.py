@@ -5,7 +5,7 @@ import os
 Performs all tests using admin user.
 This is not an rbac test.
 '''
-api = v4api.V4CategoriesApi(pc_ip=util.get_pc_ip_from_env())
+api = v4api.V4CategoriesApi()
 
 def test_create_category_success():
     response = api.create({
