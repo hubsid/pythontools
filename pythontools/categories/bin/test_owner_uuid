@@ -1,2 +1,0 @@
- pytest --pyargs pythontools.categories.test.test_owner_uuid --html=/tmp/test_owner_uuid.report.html
- open /tmp/test_owner_uuid.report.html

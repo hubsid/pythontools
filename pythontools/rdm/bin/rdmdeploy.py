@@ -11,7 +11,7 @@ from pythontools.rdm import rdmdeploy
 @click.option('--nocmsp', is_flag=True, help='if this flag is provided, then the'
                                              '\ndeployed pc will not have cmsp')
 # @click.option('--pcbuildurl')
-@click.option('--duration', type=int, default=24, help='duration of the deployment.\n'
+@click.option('--duration', type=int, default=24, required=True, help='duration of the deployment.\n'
                                                        'maximum duration is subject to restrictions imposed by admins and rdm policies')
 def main(name, nodepool, nocmsp, duration):
     """
