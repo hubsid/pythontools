@@ -3,14 +3,17 @@ import json
 import click
 import requests
 
+
+
+from pythontools.common import const
 from pythontools.iam import findrole
 from pythontools import common
 
 
 @click.command()
-@click.option('--host', default=common.PC)
-@click.option('--name', 'key', flag_value=common.Identifier.NAME.name)
-@click.option('--uuid', 'key', flag_value=common.Identifier.UUID.name)
+@click.option('--host', default=const.PC)
+@click.option('--name', 'key', flag_value=common.const.Identifier.NAME.name)
+@click.option('--uuid', 'key', flag_value=common.const.Identifier.UUID.name)
 @click.argument('values', nargs=-1)
 def main(host, key, values):
 	roles = getrole(host, key, list(values))
@@ -23,7 +26,7 @@ def main(host, key, values):
 
 def getrole(host, key, values):
 	uuids = values
-	if key == common.Identifier.NAME.name:
+	if key == common.const.Identifier.NAME.name:
 		find_results_map = findrole.findrole(host, values)
 
 
@@ -37,7 +40,7 @@ def getrole(host, key, values):
 	result = {}
 	for uuid in uuids:
 		response = requests.get(url=f'https://{host}:9440/api/nutanix/v3/roles/{uuid}',
-							auth=common.ADMIN_AUTH,
+							auth=const.ADMIN_AUTH,
 							verify=False)
 		if response.status_code == 200:
 			result[uuid] = response.json()

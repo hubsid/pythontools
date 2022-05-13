@@ -1,3 +1,5 @@
+from pythontools.common import const
+
 SCHEDULED_DEPLS_URL='https://rdm.eng.nutanix.com/api/v1/filter/scheduled_deployments?start=0&limit={lastn}&sort=-created_at&raw_query={query}'
 GET_DEPL_URL='https://rdm.eng.nutanix.com/api/v1/deployments/{id}'
 FILTER_QUERY='''{{
@@ -57,15 +59,15 @@ SECONDARY_FIELDS_SHOW_ON_FAILURE=['msg', 'progress', 'log_link']
 import threading
 import time
 import requests
-from pythontools import common
 
-def main(lastn=1, active=False, user=common.RDM_USERNAME):
+
+def main(lastn=1, active=False, user=const.RDM_USERNAME):
 	if lastn is None:
 		lastn = 1
 	if active is None:
 		active = False
 	if user is None:
-		user = common.RDM_USERNAME
+		user = const.RDM_USERNAME
 
 	url = SCHEDULED_DEPLS_URL.format(lastn=lastn, query=make_query(active, user))
 

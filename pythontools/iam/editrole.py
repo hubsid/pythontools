@@ -3,13 +3,17 @@ import time
 import click
 import requests
 
-from pythontools.iam import getpermission, getrole
+
+
 from pythontools import common
+from pythontools.common import const
+from pythontools.iam import getpermission, getrole
 
 
 @click.command()
-@click.option('--host', default=common.PC)
-@click.option('--operation', type=click.Choice([e.name for e in common.Operation]))
+@click.option('--host', default=const.PC)
+@click.option('--operation', type=click.Choice([e.name for e in
+												common.const.Operation]))
 @click.option('--uuid')
 @click.argument('modify_permission_names', nargs=-1)
 def main(host, uuid, operation, modify_permission_names):
@@ -73,7 +77,7 @@ def editrole(host, uuid, operation, modify_permission_names, verify):
 def update_role_api(host, uuid, newrole):
 	return requests.put(url=f'https://{host}:9440/api/nutanix/v3/roles/{uuid}',
 						json=newrole,
-						auth=common.ADMIN_AUTH,
+						auth=const.ADMIN_AUTH,
 						verify=False)
 
 def form_update_request(role):
@@ -89,10 +93,10 @@ def modify_permissions(role, uuid_name_map, operation, modify_permission_names, 
 
 	role_permissions = role['spec']['resources']['permission_reference_list']
 
-	if operation == common.Operation.CLEAR.name:
+	if operation == common.const.Operation.CLEAR.name:
 		role_permissions.clear()
 
-	elif operation == common.Operation.REMOVE.name:
+	elif operation == common.const.Operation.REMOVE.name:
 		permissions_to_retain = []
 		for permission in role_permissions:
 			if uuid_name_map[permission['uuid']] not in modify_permission_names:
@@ -101,7 +105,7 @@ def modify_permissions(role, uuid_name_map, operation, modify_permission_names, 
 		role_permissions.clear()
 		role_permissions += permissions_to_retain
 
-	elif operation == common.Operation.ADD.name:
+	elif operation == common.const.Operation.ADD.name:
 		# remove duplicates
 		modify_permission_names = [name for name in modify_permission_names if name not in uuid_name_map.values()]
 
@@ -110,7 +114,7 @@ def modify_permissions(role, uuid_name_map, operation, modify_permission_names, 
 		for permission in name_permission_map.values():
 			role_permissions.append(common.make_permission_obj(permission['metadata']['uuid']))
 
-	elif operation == common.Operation.SET.name:
+	elif operation == common.const.Operation.SET.name:
 		role_permissions.clear()
 
 		name_permission_map = getpermission.fetch(host, modify_permission_names)

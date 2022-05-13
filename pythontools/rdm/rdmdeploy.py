@@ -1,3 +1,5 @@
+from pythontools.common import const
+
 RDM_DEPLOY_URL='https://rdm.eng.nutanix.com/api/v1/scheduled_deployments'
 RDM_DEFAULT_SETTINGS_URL='https://rdm.eng.nutanix.com/api/v1/settings?raw_query={"name":"rdm_defaults"}'
 RDM_SMOKE_PASSED_URL='https://rdm.eng.nutanix.com/artifacts?tags=SMOKE_PASSED&product=pc&branch=master'
@@ -19,7 +21,6 @@ import os
 import random
 import requests
 
-from pythontools import common
 
 def main(name, nodepool, nocmsp, duration):
 	# print(f'nocmsp:{nocmsp}, duration:{duration}')
@@ -47,7 +48,7 @@ def main(name, nodepool, nocmsp, duration):
 
 	print('SENDING DEPLOYMENT REQUEST\n\n')
 
-	res = requests.post(url=RDM_DEPLOY_URL, json=req_body, auth=common.RDM_AUTH, verify=False)
+	res = requests.post(url=RDM_DEPLOY_URL, json=req_body, auth=const.RDM_AUTH, verify=False)
 	return res
 	# os.system(f'echo \'{json.dumps(req_body)}\' | subl')
 

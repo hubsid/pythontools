@@ -2,12 +2,13 @@
 import click
 import requests
 
-from pythontools.iam import actdir, findrole
+from pythontools.common import const
 from pythontools import common
+from pythontools.iam import actdir, findrole
 
 
 @click.command()
-@click.option('--host', default=common.PC)
+@click.option('--host', default=const.PC)
 @click.option('--role', 'role_name', required=True)
 @click.option('--actdir', 'actdirname', default='actdir')
 @click.option('--user', 'user_name', default='ca_user1')
@@ -66,7 +67,7 @@ def create(host, role_name, actdirname='actdir', user_name='ca_user1', domain='q
 						        'kind': 'access_control_policy'
 						    }
 						},
-						auth=common.ADMIN_AUTH,
+						auth=const.ADMIN_AUTH,
 						verify=False)
 	if res.status_code != 202:
 		print(f'failed creating acp, status_code:{res.status_code}\nresponse:{res.text}')

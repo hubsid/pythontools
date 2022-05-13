@@ -1,11 +1,11 @@
 import click
 
-from pythontools import common
+from pythontools.categories import const
 from pythontools.iam import actdir
 
 
 @click.command()
-@click.argument('host', default=common.PC, help='the vm ip, on which to create the active directory')
+@click.argument('host', default=const.PC, help='the vm ip, on which to create the active directory')
 def main(host):
     """
     \b

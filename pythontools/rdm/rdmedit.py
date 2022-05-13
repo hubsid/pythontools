@@ -1,14 +1,16 @@
 import os
+
 import requests
+
+from pythontools.common import const
 from pythontools.rdm import rdmstatus
-from pythontools import common
 
 RDM_EDIT_URL= 'https://rdm.eng.nutanix.com/api/v1/scheduled_deployments'
 
 def extend_expiry(deployment_id, duration):
 	url = RDM_EDIT_URL + '/' + deployment_id
-	print(f'making request to {url} with auth:{common.RDM_AUTH}')
-	return requests.put(url=url, json={'duration': duration}, auth=common.RDM_AUTH, verify=False)
+	print(f'making request to {url} with auth:{const.RDM_AUTH}')
+	return requests.put(url=url, json={'duration': duration}, auth=const.RDM_AUTH, verify=False)
 
 def main(duration, deployment_id, nthlast=0):
 	id = None

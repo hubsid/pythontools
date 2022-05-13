@@ -1,8 +1,7 @@
 import json
 import os
 
-from categories import const
-from pythontools.categories import v4apihelper, util
+from pythontools.categories import v4apihelper, util, const
 
 api = v4apihelper.V4CategoriesApiHelper()
 

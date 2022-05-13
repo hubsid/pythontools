@@ -3,11 +3,13 @@ import json
 import click
 import requests
 
+import common.util
+from pythontools.common import const
 from pythontools import common
 
 
 @click.command()
-@click.option('--host', default=common.PC)
+@click.option('--host', default=const.PC)
 @click.argument('names', nargs=-1)
 def main(host, names):
 	find_results_map = findrole(host, list(names))
@@ -25,7 +27,7 @@ def findrole(host, names):
 
 	def api_caller(offset):
 		response = list_roles_api(host, offset)
-		common.check_api_invocation('list roles', response)
+		common.util.check_api_invocation('list roles', response)
 		return response.json()
 
 	def total_finder(response_json):
@@ -40,13 +42,13 @@ def findrole(host, names):
 	def attribute_path_finder(entity):
 		return entity['status']['name']
 
-	find_results_map = common.v3_api_searcher(api_caller, total_finder, offset_finder, entities_path_finder, attribute_path_finder, names)
+	find_results_map = common.util.v3_api_searcher(api_caller, total_finder, offset_finder, entities_path_finder, attribute_path_finder, names)
 
 	return find_results_map
 
 def list_roles_api(host, offset=0):
 	return requests.post(url=f'https://{host}:9440/api/nutanix/v3/roles/list',
-						auth=common.ADMIN_AUTH,
+						auth=const.ADMIN_AUTH,
 						json={'offset': offset},
 						verify=False)
 

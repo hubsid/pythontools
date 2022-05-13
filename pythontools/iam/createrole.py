@@ -1,11 +1,12 @@
 import click
 import requests
 
+from pythontools.common import const
 from pythontools import common
 
 
 @click.command()
-@click.option('--host', default=common.PC)
+@click.option('--host', default=const.PC)
 @click.argument('name')
 def main(host, name):
 
@@ -35,7 +36,7 @@ def create_role(host, name):
 
 	res = requests.post(url=f'https://{host}:9440/api/nutanix/v3/roles',
 						json=reqbody,
-						auth=common.ADMIN_AUTH,
+						auth=const.ADMIN_AUTH,
 						verify=False)
 
 	return res
