@@ -19,12 +19,12 @@ def main(file, begin_regx, match_regx, repl_str):
     match = False
     for line in file:
         if not begin:
-            print(f'-{line}')
+            # print(f'-{line}')
             if re.compile(begin_regx).search(line):
                 begin = True
             tmpfile.write(line)
         elif not match:
-            print(f'.{line}')
+            # print(f'.{line}')
             match_obj = pattern_obj.search(line)
             if match_obj:
                 match = True
@@ -32,7 +32,7 @@ def main(file, begin_regx, match_regx, repl_str):
             else:
                 tmpfile.write(line)
         else:
-            print(f'+{line}')
+            # print(f'+{line}')
             tmpfile.write(line)
 
     file.close()
