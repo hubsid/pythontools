@@ -1,6 +1,6 @@
 import requests
 
-import common.util
+import pythontools.common.util
 from pythontools.common import const
 from pythontools import common
 

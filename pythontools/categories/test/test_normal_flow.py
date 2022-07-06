@@ -1,11 +1,11 @@
-from pythontools.categories import v4api, util
+from pythontools.categories import v4api, util, const
 import os
 
 '''
 Performs all tests using admin user.
 This is not an rbac test.
 '''
-api = v4api.V4CategoriesApi()
+api = v4api.V4CategoriesApi(username="ca_user1@qa.nutanix.com", password="nutanix/4u")
 
 def test_create_category_success():
     response = api.create({
@@ -47,7 +47,7 @@ def test_create_child_category_success():
 def test_create_child_category_under_non_existent_parent_failure():
     response = api.create({
         'name': util.create_category_name(),
-        'parentExtId': util.AAA_UUID
+        'parentExtId': const.AAA_UUID
     })
 
     assert response.status_code == 400
@@ -93,7 +93,7 @@ def test_delete_category_success():
     assert response.status_code == 204
 
 def test_delete_non_existent_category_failure():
-    response = api.delete(util.AAA_UUID)
+    response = api.delete(const.AAA_UUID)
 
     assert response.status_code == 404
     assert response.json()['data']['error'][0]['code'] == 'CTGRS-50006'
